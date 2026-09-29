@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 
 namespace atomic {
@@ -23,6 +24,9 @@ public:
     bool consume_fixed_step() noexcept;
 
 private:
+    using Clock = std::chrono::steady_clock;
+
+    Clock::time_point last_tick_;
     Seconds fixed_step_;
     Seconds max_delta_;
     Seconds delta_ = 0.0;
