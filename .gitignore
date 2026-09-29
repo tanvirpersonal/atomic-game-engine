@@ -1,0 +1,20 @@
+# Build
+build/
+dist/
+target/
+out/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Generated
+.cache/
+generated/
