@@ -1,26 +1,2 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Atomic Engine — Viewport</title>
-<style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#070b12;color:#dce8f5;font-family:system-ui,sans-serif}.viewport{position:relative;width:100%;height:100%;background:radial-gradient(circle at 50% 45%,#18283a 0,#0b1420 45%,#05080d 100%)}canvas{display:block;width:100%;height:100%}.hud{position:absolute;inset:0;pointer-events:none}.top{display:flex;justify-content:space-between;padding:18px 22px;font-size:13px;letter-spacing:.08em;text-transform:uppercase}.badge{padding:7px 10px;border:1px solid #31465c;background:#0b1420cc;border-radius:6px}.center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(72vw,820px);aspect-ratio:16/9;border:1px solid #3b5268;box-shadow:0 0 0 1px #0a111a,0 30px 80px #0008;background:#09111a88}.grid{position:absolute;inset:0;background:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);background-size:40px 40px;transform:perspective(600px) rotateX(55deg) scale(1.5);transform-origin:center bottom;opacity:.55}.cross{position:absolute;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%)}.cross:before,.cross:after{content:"";position:absolute;background:#b9d6ed88}.cross:before{width:1px;height:24px;left:12px}.cross:after{height:1px;width:24px;top:12px}.footer{position:absolute;left:22px;right:22px;bottom:18px;display:flex;justify-content:space-between;font-size:12px;color:#8298ac}.hint{color:#b5c9db}
-</style>
-</head>
-<body>
-<div class="viewport">
-<canvas id="view"></canvas>
-<div class="hud">
-<div class="top"><div class="badge">ATOMIC ENGINE</div><div class="badge">VIEWPORT · 0.1</div></div>
-<div class="center"><div class="grid"></div><div class="cross"></div></div>
-<div class="footer"><span>Editor viewport foundation</span><span class="hint">Next: native window + renderer</span></div>
-</div>
-</div>
-<script>
-const c=document.getElementById('view'),ctx=c.getContext('2d');
-function resize(){const d=devicePixelRatio||1;c.width=innerWidth*d;c.height=innerHeight*d;ctx.setTransform(d,0,0,d,0,0)}
-addEventListener('resize',resize);resize();
-</script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Atomic Engine — Viewport</title><style>*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#070b12;color:#dce8f5;font:13px system-ui,sans-serif}.viewport{position:relative;width:100%;height:100%;background:radial-gradient(circle at 50% 45%,#18283a,#0b1420 45%,#05080d)}canvas{display:block;width:100%;height:100%}.hud{position:absolute;inset:0;pointer-events:none}.top{display:flex;justify-content:space-between;padding:18px 22px;text-transform:uppercase;letter-spacing:.08em}.badge{padding:7px 10px;border:1px solid #31465c;background:#0b1420dd;border-radius:6px}.center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(72vw,820px);aspect-ratio:16/9;border:1px solid #3b5268;background:#09111a88;box-shadow:0 30px 80px #0008}.grid{position:absolute;inset:0;background:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);background-size:40px 40px;transform:perspective(600px) rotateX(55deg) scale(1.5);transform-origin:center bottom;opacity:.55}.cross{position:absolute;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%)}.cross:before,.cross:after{content:"";position:absolute;background:#b9d6ed88}.cross:before{width:1px;height:24px;left:12px}.cross:after{height:1px;width:24px;top:12px}.info{position:absolute;left:18px;bottom:18px;padding:10px 12px;border:1px solid #294054;background:#08121edd;border-radius:6px;line-height:1.6}.footer{position:absolute;right:22px;bottom:18px;color:#8298ac}</style></head><body><div class="viewport"><canvas id="view"></canvas><div class="hud"><div class="top"><div class="badge">ATOMIC ENGINE</div><div class="badge">LIVE VIEWPORT · 0.2</div></div><div class="center"><div class="grid"></div><div class="cross"></div></div><div class="info"><b>Scene</b><br>Triangle primitive<br>Vertices: 3<br>Renderer: CPU preview</div><div class="footer">Viewport foundation → GPU backend next</div></div></div><script>const c=document.getElementById('view'),ctx=c.getContext('2d');let t=0;function resize(){const d=devicePixelRatio||1;c.width=innerWidth*d;c.height=innerHeight*d;ctx.setTransform(d,0,0,d,0,0)}function draw(){t+=.01;resize();const w=innerWidth,h=innerHeight,cx=w/2,cy=h/2,scale=Math.min(w*.24,h*.32);ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.sin(t)*.025);ctx.beginPath();ctx.moveTo(0,-scale);ctx.lineTo(scale*.9,scale*.65);ctx.lineTo(-scale*.9,scale*.65);ctx.closePath();ctx.fillStyle='#55c8ff';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#c9edff';ctx.stroke();ctx.restore();requestAnimationFrame(draw)}draw();</script></body></html>
