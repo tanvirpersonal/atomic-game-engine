@@ -30,8 +30,9 @@ endif()
 
 add_subdirectory(engine/platform)
 add_subdirectory(engine/ecs)
+add_subdirectory(engine/renderer)
 
 if(ATOMIC_BUILD_EXAMPLES)
     add_executable(atomic_core_smoke examples/core_smoke/main.cpp)
-    target_link_libraries(atomic_core_smoke PRIVATE atomic_core atomic_ecs atomic_platform)
+    target_link_libraries(atomic_core_smoke PRIVATE atomic_core atomic_ecs atomic_platform atomic_renderer)
 endif()
