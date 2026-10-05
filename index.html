@@ -50,6 +50,109 @@
     max-width:none;
   }
 }
+</style><style id="atomic-ui-polish-v2">
+/* Atomic editor v2: explicit HUD lanes + compact modern panels. */
+.viewport{isolation:isolate}
+.toolbar{
+  left:50% !important;
+  right:auto !important;
+  top:9px !important;
+  transform:translateX(-50%) !important;
+  width:max-content;
+  max-width:calc(100% - 300px);
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-width:none;
+  white-space:nowrap;
+  z-index:30 !important;
+  background:rgba(9,17,25,.94) !important;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.toolbar::-webkit-scrollbar{display:none}
+.title,#ttl{
+  left:12px !important;
+  right:auto !important;
+  top:52px !important;
+  height:21px !important;
+  max-width:calc(50% - 24px);
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  padding:0 7px !important;
+  background:rgba(7,13,20,.88) !important;
+  border:1px solid #203541 !important;
+  border-radius:5px !important;
+  z-index:25 !important;
+}
+.stats{
+  left:auto !important;
+  right:12px !important;
+  top:52px !important;
+  max-width:calc(50% - 24px);
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  z-index:25 !important;
+}
+.hint{
+  left:12px !important;
+  right:82px !important;
+  bottom:12px !important;
+  width:max-content;
+  max-width:calc(100% - 170px);
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  z-index:25 !important;
+  background:rgba(7,13,20,.88) !important;
+  backdrop-filter:blur(8px);
+}
+#ax{
+  right:12px !important;
+  bottom:10px !important;
+  width:62px !important;
+  height:62px !important;
+  z-index:26 !important;
+}
+/* Compact inspector: clear component cards instead of loose rows. */
+.right{background:#0a1118 !important}
+.inspectorTitle{position:sticky;top:0;z-index:4;background:rgba(13,21,29,.96)!important;backdrop-filter:blur(10px)}
+.prop{background:linear-gradient(180deg,#0b131b,#091118);margin:0;border-bottom:1px solid #1b2934}
+.propHead{margin-bottom:7px}
+.metric{min-height:20px;margin:2px 0;padding:2px 0}
+.trow{margin:4px 0}
+.objectName{height:28px!important}
+/* Keep the hierarchy and material palette visually separated. */
+.left .section{background:#0a1118}
+.left .section:first-child{background:#0b141c}
+.sectionHead{background:#0d151d}
+.createGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.createGrid button{height:28px}
+.materials{grid-template-columns:repeat(5,1fr);gap:5px}
+.materials i{height:21px}
+/* Do not let responsive side panels cover the editor HUD. */
+@media(max-width:1050px){
+  .toolbar{max-width:calc(100% - 220px)!important}
+}
+@media(max-width:900px){
+  .toolbar{
+    left:8px !important;
+    right:8px !important;
+    transform:none !important;
+    width:auto !important;
+    max-width:none !important;
+    justify-content:flex-start;
+  }
+  .title,#ttl{top:52px!important;max-width:55%}
+  .stats{top:52px!important;max-width:40%}
+}
+@media(max-width:560px){
+  .title,#ttl{max-width:48%;font-size:8px!important}
+  .stats{max-width:44%;font-size:8px!important}
+  .hint{right:70px!important;max-width:calc(100% - 90px)!important}
+  #ax{width:52px!important;height:52px!important}
+}
 </style></head><body><div class="app"><header class="top"><div class="brand"><i>⚛</i> ATOMIC</div><div id="menus"><button class="menu" data-m="File">File</button><button class="menu" data-m="Edit">Edit</button><button class="menu" data-m="GameObject">GameObject</button></div><div class="sp"></div><div class="chip">DEBUG</div><button class="chip play" id="play">▶ PLAY</button></header><nav class="tabs"><button class="tab on" data-tab="scene">⌂ Main Scene</button><button class="tab" data-tab="game">▣ Game</button><button class="tab" data-tab="console">▤ Console</button><div class="sp"></div><div class="tab">Atomic Engine 0.2</div></nav><main class="workspace"><aside class="side left"><section class="section"><div class="sectionHead">Create <small>Primitives</small></div><div class="createGrid" id="add"><button data-t="cube"><span class="icon">◆</span>Cube</button><button data-t="sphere"><span class="icon">●</span>Sphere</button><button data-t="cylinder"><span class="icon">▮</span>Cylinder</button><button data-t="cone"><span class="icon">▲</span>Cone</button><button data-t="plane"><span class="icon">▬</span>Plane</button><button data-a="dup"><span class="icon">⧉</span>Duplicate</button></div><div class="miniActions"><button data-a="del">Delete</button></div></section><section class="section" style="display:flex;flex-direction:column;min-height:0;flex:1"><div class="sectionHead">Scene Hierarchy <small id="objCount">0 objects</small></div><div class="tree" id="tree"></div></section><section class="section"><div class="sectionHead">Materials <small>Palette</small></div><div class="materials" id="pal"></div></section></aside><section class="content scene" id="ct"><div class="viewport" id="vp"><canvas id="c"></canvas><div class="toolbar"><div class="toolGroup"><button class="tool active" data-v="ortho">Perspective</button><button class="tool active" data-v="shaded">Shaded</button><button class="tool" data-v="wire">Wire</button></div><div class="toolGroup"><button class="tool active" data-tool="move">W Move</button><button class="tool" data-tool="rotate">E Rotate</button><button class="tool" data-tool="scale">R Scale</button></div><div class="toolGroup"><button class="tool icon" data-a="undo">↶</button><button class="tool icon" data-a="redo">↷</button><button class="tool" data-a="focus">Focus F</button></div></div><div class="ov title" id="ttl">SCENE VIEW · CPU RASTERIZER · GRID 1m</div><div class="ov stats" id="stats"></div><div class="ov hint">LMB orbit · Shift/RMB pan · Wheel zoom · W/E/R · Ctrl snap · F focus · Home reset</div><canvas id="ax" width="124" height="124"></canvas></div><div id="con"></div></section><aside class="side right"><div class="inspectorTitle"><span class="dot"></span>Inspector</div><div id="insp"></div><div class="prop"><div class="propHead">Renderer <span>ENGINE</span></div><div class="metric"><span>Pipeline</span><b>Rasterizer</b></div><div class="metric"><span>Backend</span><b>CPU Preview</b></div><div class="metric"><span>Frame time</span><b id="ft">16.6 ms</b></div><div class="metric"><span>Status</span><b class="ok">READY</b></div></div></aside></main><footer class="footer"><span>⚛ Atomic Game Engine</span><span>CPU Preview</span><span class="ok">● RUNNING</span><span id="fi"></span><span>Core → Platform → Math → Renderer</span></footer></div><script>
 const $=s=>document.querySelector(s),c=$('#c'),x=c.getContext('2d'),vp=$('#vp'),D=Math.PI/180,clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),hex=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16)),esc=s=>String(s).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const MESH={cube:{v:[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],f:[[0,3,2,1],[4,5,6,7],[0,1,5,4],[3,7,6,2],[0,4,7,3],[1,2,6,5]]}};(()=>{const N=20,T=6.2832,r=[...Array(N).keys()],ring=y=>r.map(i=>[Math.cos(i/N*T),y,Math.sin(i/N*T)]);MESH.cylinder={v:ring(-1).concat(ring(1)),f:r.map(i=>[i,(i+1)%N,N+(i+1)%N,N+i]).concat([r,r.map(i=>N+i)])};MESH.cone={v:ring(-1).concat([[0,1,0]]),f:r.map(i=>[i,(i+1)%N,N]).concat([r])};const S=16,L=10,v=[],f=[];for(let i=0;i<=L;i++)for(let j=0;j<S;j++){const p=i/L*Math.PI,t=j/S*T;v.push([Math.sin(p)*Math.cos(t),Math.cos(p),Math.sin(p)*Math.sin(t)])}for(let i=0;i<L;i++)for(let j=0;j<S;j++){const k=(j+1)%S;f.push([i*S+j,i*S+k,(i+1)*S+k,(i+1)*S+j])}MESH.sphere={v,f};MESH.plane={v:[[-3,0,-3],[3,0,-3],[3,0,3],[-3,0,3]],f:[[0,1,2,3]],two:1}})();
