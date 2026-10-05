@@ -1,0 +1,89 @@
+name: Atomic UI HUD Fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix-hud-layout:
+    if: ${{ !contains(github.event.head_commit.message, '[hud-fix]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply HUD layout patch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<style id="atomic-hud-fix">'
+          if marker in s:
+              raise SystemExit(0)
+          css = '''<style id="atomic-hud-fix">
+          /* Atomic HUD layout: fixed zones prevent toolbar/title/stats/gizmo overlap. */
+          .toolbar{
+            left:50% !important;
+            right:auto !important;
+            top:10px !important;
+            transform:translateX(-50%) !important;
+            max-width:calc(100% - 180px);
+            overflow-x:auto;
+            overflow-y:hidden;
+            white-space:nowrap;
+            z-index:20 !important;
+          }
+          .title,#ttl{
+            left:12px !important;
+            top:50px !important;
+            right:auto !important;
+            height:22px;
+            display:flex;
+            align-items:center;
+            padding:0 7px;
+            background:#080f16dd;
+            border:1px solid #1d303c;
+            border-radius:5px;
+            z-index:19 !important;
+          }
+          .stats{
+            right:12px !important;
+            left:auto !important;
+            top:50px !important;
+            z-index:19 !important;
+          }
+          #ax{
+            right:12px !important;
+            bottom:12px !important;
+            z-index:19 !important;
+          }
+          .hint{
+            left:12px !important;
+            bottom:12px !important;
+            z-index:19 !important;
+          }
+          @media(max-width:900px){
+            .toolbar{
+              left:10px !important;
+              right:10px !important;
+              transform:none !important;
+              max-width:none;
+            }
+          }
+          </style>'''
+          s = s.replace('</head>', css + '</head>', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit HUD fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "fix: separate viewport HUD zones [hud-fix]"
+          git push
