@@ -14,7 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Apply editor UI polish
         run: |
           python3 - <<'PY'
@@ -25,113 +24,23 @@ jobs:
           if marker in s:
               raise SystemExit(0)
           css = '''<style id="atomic-ui-polish-v2">
-          /* Atomic editor v2: explicit HUD lanes + compact modern panels. */
           .viewport{isolation:isolate}
-          .toolbar{
-            left:50% !important;
-            right:auto !important;
-            top:9px !important;
-            transform:translateX(-50%) !important;
-            width:max-content;
-            max-width:calc(100% - 300px);
-            overflow-x:auto;
-            overflow-y:hidden;
-            scrollbar-width:none;
-            white-space:nowrap;
-            z-index:30 !important;
-            background:rgba(9,17,25,.94) !important;
-            backdrop-filter:blur(12px);
-            -webkit-backdrop-filter:blur(12px);
-          }
+          .toolbar{left:50%!important;right:auto!important;top:9px!important;transform:translateX(-50%)!important;width:max-content;max-width:calc(100% - 300px);overflow-x:auto;overflow-y:hidden;scrollbar-width:none;white-space:nowrap;z-index:30!important;background:rgba(9,17,25,.94)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
           .toolbar::-webkit-scrollbar{display:none}
-          .title,#ttl{
-            left:12px !important;
-            right:auto !important;
-            top:52px !important;
-            height:21px !important;
-            max-width:calc(50% - 24px);
-            overflow:hidden;
-            white-space:nowrap;
-            text-overflow:ellipsis;
-            padding:0 7px !important;
-            background:rgba(7,13,20,.88) !important;
-            border:1px solid #203541 !important;
-            border-radius:5px !important;
-            z-index:25 !important;
-          }
-          .stats{
-            left:auto !important;
-            right:12px !important;
-            top:52px !important;
-            max-width:calc(50% - 24px);
-            overflow:hidden;
-            white-space:nowrap;
-            text-overflow:ellipsis;
-            z-index:25 !important;
-          }
-          .hint{
-            left:12px !important;
-            right:82px !important;
-            bottom:12px !important;
-            width:max-content;
-            max-width:calc(100% - 170px);
-            overflow:hidden;
-            white-space:nowrap;
-            text-overflow:ellipsis;
-            z-index:25 !important;
-            background:rgba(7,13,20,.88) !important;
-            backdrop-filter:blur(8px);
-          }
-          #ax{
-            right:12px !important;
-            bottom:10px !important;
-            width:62px !important;
-            height:62px !important;
-            z-index:26 !important;
-          }
-          /* Compact inspector: clear component cards instead of loose rows. */
-          .right{background:#0a1118 !important}
-          .inspectorTitle{position:sticky;top:0;z-index:4;background:rgba(13,21,29,.96)!important;backdrop-filter:blur(10px)}
-          .prop{background:linear-gradient(180deg,#0b131b,#091118);margin:0;border-bottom:1px solid #1b2934}
-          .propHead{margin-bottom:7px}
-          .metric{min-height:20px;margin:2px 0;padding:2px 0}
-          .trow{margin:4px 0}
-          .objectName{height:28px!important}
-          /* Keep the hierarchy and material palette visually separated. */
-          .left .section{background:#0a1118}
-          .left .section:first-child{background:#0b141c}
-          .sectionHead{background:#0d151d}
-          .createGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
-          .createGrid button{height:28px}
-          .materials{grid-template-columns:repeat(5,1fr);gap:5px}
-          .materials i{height:21px}
-          /* Do not let responsive side panels cover the editor HUD. */
-          @media(max-width:1050px){
-            .toolbar{max-width:calc(100% - 220px)!important}
-          }
-          @media(max-width:900px){
-            .toolbar{
-              left:8px !important;
-              right:8px !important;
-              transform:none !important;
-              width:auto !important;
-              max-width:none !important;
-              justify-content:flex-start;
-            }
-            .title,#ttl{top:52px!important;max-width:55%}
-            .stats{top:52px!important;max-width:40%}
-          }
-          @media(max-width:560px){
-            .title,#ttl{max-width:48%;font-size:8px!important}
-            .stats{max-width:44%;font-size:8px!important}
-            .hint{right:70px!important;max-width:calc(100% - 90px)!important}
-            #ax{width:52px!important;height:52px!important}
-          }
+          .title,#ttl{left:12px!important;right:auto!important;top:52px!important;height:21px!important;max-width:calc(50% - 24px);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 7px!important;background:rgba(7,13,20,.88)!important;border:1px solid #203541!important;border-radius:5px!important;z-index:25!important}
+          .stats{left:auto!important;right:12px!important;top:52px!important;max-width:calc(50% - 24px);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;z-index:25!important}
+          .hint{left:12px!important;right:82px!important;bottom:12px!important;width:max-content;max-width:calc(100% - 170px);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;z-index:25!important;background:rgba(7,13,20,.88)!important;backdrop-filter:blur(8px)}
+          #ax{right:12px!important;bottom:10px!important;width:62px!important;height:62px!important;z-index:26!important}
+          .right{background:#0a1118!important}.inspectorTitle{position:sticky;top:0;z-index:4;background:rgba(13,21,29,.96)!important;backdrop-filter:blur(10px)}
+          .prop{background:linear-gradient(180deg,#0b131b,#091118);margin:0;border-bottom:1px solid #1b2934}.propHead{margin-bottom:7px}.metric{min-height:20px;margin:2px 0;padding:2px 0}.trow{margin:4px 0}.objectName{height:28px!important}
+          .left .section{background:#0a1118}.left .section:first-child{background:#0b141c}.sectionHead{background:#0d151d}.createGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.createGrid button{height:28px}.materials{grid-template-columns:repeat(5,1fr);gap:5px}.materials i{height:21px}
+          @media(max-width:1050px){.toolbar{max-width:calc(100% - 220px)!important}}
+          @media(max-width:900px){.toolbar{left:8px!important;right:8px!important;transform:none!important;width:auto!important;max-width:none!important;justify-content:flex-start}.title,#ttl{top:52px!important;max-width:55%}.stats{top:52px!important;max-width:40%}}
+          @media(max-width:560px){.title,#ttl{max-width:48%;font-size:8px!important}.stats{max-width:44%;font-size:8px!important}.hint{right:70px!important;max-width:calc(100% - 90px)!important}#ax{width:52px!important;height:52px!important}}
           </style>'''
           s = s.replace('</head>', css + '</head>', 1)
           p.write_text(s, encoding='utf-8')
           PY
-
       - name: Commit HUD fix
         run: |
           git config user.name "github-actions[bot]"
