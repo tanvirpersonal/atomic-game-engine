@@ -28,9 +28,10 @@ else()
     target_compile_options(atomic_core PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
+add_subdirectory(engine/platform)
 add_subdirectory(engine/ecs)
 
 if(ATOMIC_BUILD_EXAMPLES)
     add_executable(atomic_core_smoke examples/core_smoke/main.cpp)
-    target_link_libraries(atomic_core_smoke PRIVATE atomic_core atomic_ecs)
+    target_link_libraries(atomic_core_smoke PRIVATE atomic_core atomic_ecs atomic_platform)
 endif()
