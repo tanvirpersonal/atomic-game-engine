@@ -15,64 +15,117 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Apply HUD layout patch
+      - name: Apply editor UI polish
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          marker = '<style id="atomic-hud-fix">'
+          marker = '<style id="atomic-ui-polish-v2">'
           if marker in s:
               raise SystemExit(0)
-          css = '''<style id="atomic-hud-fix">
-          /* Atomic HUD layout: fixed zones prevent toolbar/title/stats/gizmo overlap. */
+          css = '''<style id="atomic-ui-polish-v2">
+          /* Atomic editor v2: explicit HUD lanes + compact modern panels. */
+          .viewport{isolation:isolate}
           .toolbar{
             left:50% !important;
             right:auto !important;
-            top:10px !important;
+            top:9px !important;
             transform:translateX(-50%) !important;
-            max-width:calc(100% - 180px);
+            width:max-content;
+            max-width:calc(100% - 300px);
             overflow-x:auto;
             overflow-y:hidden;
+            scrollbar-width:none;
             white-space:nowrap;
-            z-index:20 !important;
+            z-index:30 !important;
+            background:rgba(9,17,25,.94) !important;
+            backdrop-filter:blur(12px);
+            -webkit-backdrop-filter:blur(12px);
           }
+          .toolbar::-webkit-scrollbar{display:none}
           .title,#ttl{
             left:12px !important;
-            top:50px !important;
             right:auto !important;
-            height:22px;
-            display:flex;
-            align-items:center;
-            padding:0 7px;
-            background:#080f16dd;
-            border:1px solid #1d303c;
-            border-radius:5px;
-            z-index:19 !important;
+            top:52px !important;
+            height:21px !important;
+            max-width:calc(50% - 24px);
+            overflow:hidden;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            padding:0 7px !important;
+            background:rgba(7,13,20,.88) !important;
+            border:1px solid #203541 !important;
+            border-radius:5px !important;
+            z-index:25 !important;
           }
           .stats{
-            right:12px !important;
             left:auto !important;
-            top:50px !important;
-            z-index:19 !important;
-          }
-          #ax{
             right:12px !important;
-            bottom:12px !important;
-            z-index:19 !important;
+            top:52px !important;
+            max-width:calc(50% - 24px);
+            overflow:hidden;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            z-index:25 !important;
           }
           .hint{
             left:12px !important;
+            right:82px !important;
             bottom:12px !important;
-            z-index:19 !important;
+            width:max-content;
+            max-width:calc(100% - 170px);
+            overflow:hidden;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            z-index:25 !important;
+            background:rgba(7,13,20,.88) !important;
+            backdrop-filter:blur(8px);
+          }
+          #ax{
+            right:12px !important;
+            bottom:10px !important;
+            width:62px !important;
+            height:62px !important;
+            z-index:26 !important;
+          }
+          /* Compact inspector: clear component cards instead of loose rows. */
+          .right{background:#0a1118 !important}
+          .inspectorTitle{position:sticky;top:0;z-index:4;background:rgba(13,21,29,.96)!important;backdrop-filter:blur(10px)}
+          .prop{background:linear-gradient(180deg,#0b131b,#091118);margin:0;border-bottom:1px solid #1b2934}
+          .propHead{margin-bottom:7px}
+          .metric{min-height:20px;margin:2px 0;padding:2px 0}
+          .trow{margin:4px 0}
+          .objectName{height:28px!important}
+          /* Keep the hierarchy and material palette visually separated. */
+          .left .section{background:#0a1118}
+          .left .section:first-child{background:#0b141c}
+          .sectionHead{background:#0d151d}
+          .createGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+          .createGrid button{height:28px}
+          .materials{grid-template-columns:repeat(5,1fr);gap:5px}
+          .materials i{height:21px}
+          /* Do not let responsive side panels cover the editor HUD. */
+          @media(max-width:1050px){
+            .toolbar{max-width:calc(100% - 220px)!important}
           }
           @media(max-width:900px){
             .toolbar{
-              left:10px !important;
-              right:10px !important;
+              left:8px !important;
+              right:8px !important;
               transform:none !important;
-              max-width:none;
+              width:auto !important;
+              max-width:none !important;
+              justify-content:flex-start;
             }
+            .title,#ttl{top:52px!important;max-width:55%}
+            .stats{top:52px!important;max-width:40%}
+          }
+          @media(max-width:560px){
+            .title,#ttl{max-width:48%;font-size:8px!important}
+            .stats{max-width:44%;font-size:8px!important}
+            .hint{right:70px!important;max-width:calc(100% - 90px)!important}
+            #ax{width:52px!important;height:52px!important}
           }
           </style>'''
           s = s.replace('</head>', css + '</head>', 1)
@@ -85,5 +138,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "fix: separate viewport HUD zones [hud-fix]"
+          git commit -m "fix: polish editor HUD and panels [hud-fix]"
           git push
